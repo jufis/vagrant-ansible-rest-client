@@ -1,0 +1,30 @@
+---  
+  - name: install required docker packages
+    yum: pkg={{item}} state=installed
+    with_items:
+     - epel-release
+     - docker
+     - python-docker-py
+     - bind-utils
+  - name: install device mapper #trick for bug https://github.com/docker/docker/issues/12087 conficted with docker
+    yum: name=device-mapper-event-libs state=latest
+  - template : src=docker.j2 dest=/etc/sysconfig/docker   	
+  - name: "Export DOCKER_HOST variable for secure registry for all users"
+    lineinfile: dest=/etc/bashrc line="export DOCKER_HOST={{ docker_host }}"
+  - name: add registry certs if exists
+    local_action: command stat {{ docker_registry_certificates }}
+    sudo: false
+    register: result  
+    ignore_errors: true  
+  - name: create docker registry path cert dir
+    command: mkdir -p /etc/docker/certs.d/{{ docker_registry_path }}/
+    when: result|success   
+  - copy: src={{ docker_registry_certificates }}/  dest=/etc/docker/certs.d/{{ docker_registry_path }}/
+    when: result|success 
+  - service: name=docker enabled=yes state=restarted
+  - name: create group docker
+    command: groupadd docker
+    ignore_errors: true 
+  - name: add user to docker group
+    command: usermod -a -G docker $USER
+    ignore_errors: true

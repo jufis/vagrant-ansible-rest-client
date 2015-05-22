@@ -1,0 +1,14 @@
+---  
+  - name: "Update hosts file for server info"
+    lineinfile: dest=/etc/hosts regexp='.*{{ server_name }}$' line="{{ server_ip }} {{server_name}}" state=present
+  - name: "Update hosts file for docker-registry info"
+    lineinfile: dest=/etc/hosts regexp='.*{{ docker_registry_name }}$' line="{{ docker_registry_ip }} {{docker_registry_name}}" state=present
+  - name: "Pull docker-rest-client"
+    environment: 
+      DOCKER_HOST: "{{ docker_host }}"
+    shell: "docker pull {{ docker_registry_location }}/{{ docker_repository }}/{{ docker_application_name }}:{{ git_tag }}"
+  - name: "Run docker-rest-client in daemon mode, use docker ps to check status"
+    environment: 
+      DOCKER_HOST: "{{ docker_host }}"
+    shell: "docker run -it --add-host {{ server_name }}:{{ server_ip }} {{ docker_registry_location }}/{{ docker_repository }}/{{ docker_application_name }}:{{ git_tag }}"
+    sudo: false
