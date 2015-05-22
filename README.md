@@ -1,12 +1,27 @@
-# Provision docker-rest-client with vagrant and ansible
+# Provision docker-rest-server with vagrant and ansible
 
 In this example we use the docker-rest-client project as our target module to run using vagrant and ansible.
 
-Here I have used the following centos image:
+##Requirements
+
+Please install the following packages to your local linux environment:
+
+<pre>
+yum install vagrant
+yum install ansible
+yum install VirtualBox
+yum install python-docker-py
+<pre>
+
+##VirtualBox Operating System
+
+CentOS 7 64-bit
+
+##Box Location
 
 https://github.com/holms/vagrant-centos7-box/releases/download/7.1.1503.001/CentOS-7.1.1503-x86_64-netboot.box
 
-Vagrant version:
+##Vagrant version
 
 >$ vagrant --version
 
@@ -14,7 +29,7 @@ Vagrant version:
 Vagrant 1.7.2
 </pre>
 
-Ansible version:
+##Ansible version
 
 >$ ansible --version
 
@@ -22,6 +37,9 @@ Ansible version:
 ansible 1.9.1
   configured module search path = None
 </pre>
+
+
+##Instructions
 
 You need to edit the following to match your environment:
 
