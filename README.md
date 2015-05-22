@@ -6,7 +6,15 @@ Here I have used the following centos image:
 
 https://github.com/holms/vagrant-centos7-box/releases/download/7.1.1503.001/CentOS-7.1.1503-x86_64-netboot.box
 
-For local ansible I have used this version:
+Vagrant version:
+
+>$ vagrant --version
+
+<pre>
+Vagrant 1.7.2
+</pre>
+
+Ansible version:
 
 >$ ansible --version
 
