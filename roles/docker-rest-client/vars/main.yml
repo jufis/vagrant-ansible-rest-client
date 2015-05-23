@@ -1,7 +1,7 @@
 ---
 server_name: "server"
 server_ip: "192.168.1.7"
-docker_host: "tcp://localhost:2376"
+docker_host: "tcp://docker.jufis.net:2376"
 docker_registry_name: "registry.jufis.net"
 docker_registry_ip: "192.168.1.7"
 docker_registry_location: "registry.jufis.net:443"

@@ -13,13 +13,13 @@
   - name: "Pull and Run docker-rest-client"
     docker:
       docker_api_version: "1.19"
-      docker_url: "https://localhost:2376"
+      docker_url: "https://{{docker_server}}:2376"
       image: "{{ docker_registry_location }}/{{ docker_repository }}/{{ docker_application_name }}:{{ git_tag }}"
       insecure_registry: true
       use_tls: verify
       tls_ca_cert: "/root/.docker/ca.pem"
       tls_client_cert: "/root/.docker/cert.pem"
       tls_client_key: "/root/.docker/key.pem"
-      tls_hostname: "docker.jufis.net"
+      tls_hostname: "{{docker_server}}"
       state: reloaded
       pull: always
