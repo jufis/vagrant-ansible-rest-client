@@ -21,5 +21,6 @@
       tls_client_cert: "/root/.docker/cert.pem"
       tls_client_key: "/root/.docker/key.pem"
       tls_hostname: "{{docker_server}}"
+      extra_hosts: "{{server_name}}={{server_ip}}"
       state: reloaded
       pull: always
