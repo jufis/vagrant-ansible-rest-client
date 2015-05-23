@@ -1,16 +1,17 @@
 ---  
+  - name: install cmd style required stuff
+    command: yum install -y python-yumdaemon.noarch
   - name: install required docker packages
     yum: pkg={{item}} state=installed
     with_items:
-     - epel-release
      - docker
      - python-docker-py
      - bind-utils
   - name: install device mapper #trick for bug https://github.com/docker/docker/issues/12087 conficted with docker
     yum: name=device-mapper-event-libs state=latest
   - template : src=docker.j2 dest=/etc/sysconfig/docker   	
-  - name: "Export DOCKER_HOST variable for secure registry for all users"
-    lineinfile: dest=/etc/bashrc line="export DOCKER_HOST={{ docker_host }}"
+  - lineinfile: dest=/etc/bashrc line="export DOCKER_HOST={{ docker_host }}"
+  - lineinfile: dest=/etc/bashrc line="export DOCKER_TLS_VERIFY=1"
   - name: add registry certs if exists
     local_action: command stat {{ docker_registry_certificates }}
     sudo: false
@@ -21,10 +22,27 @@
     when: result|success   
   - copy: src={{ docker_registry_certificates }}/  dest=/etc/docker/certs.d/{{ docker_registry_path }}/
     when: result|success 
+  - name: add client certs if exists
+    local_action: command stat {{ docker_client_certificates }}
+    sudo: false
+    register: result_client
+    ignore_errors: true  
+  - name: create docker client auth cert dir
+    command: mkdir -p /root/.docker
+    when: result_client|success
+  - copy: src={{ docker_client_certificates }}/  dest=/root/.docker/
+    when: result_client|success
+  - copy: src={{ docker_client_certificates }}/  dest=/home/vagrant/.docker/
+    sudo: false
+    when: result_client|success
   - service: name=docker enabled=yes state=restarted
   - name: create group docker
     command: groupadd docker
     ignore_errors: true 
-  - name: add user to docker group
+  - name: add root to docker group
     command: usermod -a -G docker $USER
+    ignore_errors: true
+  - name: add vagrant user to docker group
+    command: usermod -a -G docker $USER
+    sudo: false
     ignore_errors: true

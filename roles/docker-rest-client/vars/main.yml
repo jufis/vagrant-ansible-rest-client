@@ -1,10 +1,11 @@
 ---
 server_name: "server"
 server_ip: "192.168.1.7"
-docker_host: "tcp://localhost:2375"
+docker_host: "tcp://localhost:2376"
 docker_registry_name: "registry.jufis.net"
 docker_registry_ip: "192.168.1.7"
 docker_registry_location: "registry.jufis.net:443"
 docker_application_name: "docker-rest-client"
 docker_repository: "jufis-dev"
 git_tag: "latest"
+docker_server: "docker.jufis.net"

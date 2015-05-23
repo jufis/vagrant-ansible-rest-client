@@ -1,6 +1,6 @@
 ---
-docker_options: "--selinux-enabled -H tcp://localhost:2375"
-docker_host: "tcp://localhost:2375"
+docker_options: "--tlsverify --tlscacert=/root/.docker/ca.pem --tlscert=/root/.docker/server-cert.pem --tlskey=/root/.docker/server-key.pem -H tcp://localhost:2376"
+docker_host: "tcp://localhost:2376"
 docker_registry_certificates: "/etc/docker/certs.d/registry.jufis.net:443"
 docker_registry_path: "registry.jufis.net:443"
-docker_client_certificates: "/home/jufis/.docker"
+docker_client_certificates: "/home/jufis/.docker/"
